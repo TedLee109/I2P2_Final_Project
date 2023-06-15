@@ -1,5 +1,7 @@
 #pragma once
 #include "../state/state.hpp"
+#include <iostream>
+
 
 
 /**
@@ -9,4 +11,5 @@
 class MinMax{
 public:
   static Move get_move(State *state, int depth);
+  static int minmax(State* root, int depth, bool maximizer);
 };
