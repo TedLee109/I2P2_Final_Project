@@ -8,6 +8,116 @@
 
 static const int value[7] = {0, 10, 50, 30, 30, 100, 900};
 
+static const int pawn_weight[2][6][5] = {{
+                                         {0, 0, 0, 0, 0}, 
+                                         {5, 5, 5, 5, 5}, 
+                                         {4, 4, 4, 4, 4}, 
+                                         {2, 2, 2, 2, 2}, 
+                                         {1, 1, 1, 1, 1},
+                                         {0, 0, 0, 0, 0}
+                                        }, 
+                                         
+                                        {
+                                         {0, 0, 0, 0, 0}, 
+                                         {1, 1, 1, 1, 1},
+                                         {2, 2, 2, 2, 2}, 
+                                         {4, 4, 4, 4, 4}, 
+                                         {5, 5, 5, 5, 5}, 
+                                         {0, 0, 0, 0, 0}
+                                        }
+                                        };
+static const int rook_weight[2][6][5] = {{
+                                          {0, 0, 0, 0, 0}, 
+                                          {1, 2, 2, 2, 1}, 
+                                          {-1, 0, 0, 0, -1}, 
+                                          {-1, 0, 0, 0, -1}, 
+                                          {-1, 0, 0, 0, -1}, 
+                                          {0, 0, 1, 0, 0}
+                                          }, 
+                                          {
+                                           {0, 0, 1, 0, 0}, 
+                                           {-1, 0, 0, 0, -1}, 
+                                           {-1, 0, 0, 0, -1},
+                                           {-1, 0, 0, 0, -1}, 
+                                           {1, 2, 2, 2, 1}, 
+                                           {0, 0, 0, 0, 0}, 
+                                          }
+                                        };
+
+static const int knight_weight[2][6][5] = {{
+                                            {-5, -4, -3, -4, -5},
+                                            {-4, -2, 0, -2, -4}, 
+                                            {-3, 0, 2, 0, -3},
+                                            {-3, 0, 2, 0, -3},
+                                            {-4, -2, 0, -2, -4},
+                                            {-5, -4, -3, -4, -5}
+                                            },
+                                            {
+                                            {-5, -4, -3, -4, -5},
+                                            {-4, -2, 0, -2, -4}, 
+                                            {-3, 0, 2, 0, -3},
+                                            {-3, 0, 2, 0, -3},
+                                            {-4, -2, 0, -2, -4},
+                                            {-5, -4, -3, -4, -5}
+                                            }
+                                          };
+
+static const int bishop_weight[2][6][5] = {{
+                                            {-2, -1, -1, -1, -2},
+                                            {-1, 0, 0, 0, -1}, 
+                                            {0, 2, 0, 2, 0}, 
+                                            {-1, 0, 2, 0, -1},
+                                            {0, 1, 0, 1, 0}, 
+                                            {-2, 0, -1, 0, -2}
+                                          }, 
+                                          {
+                                            {-2, 0, -1, 0, -2}, 
+                                            {0, 1, 0, 1, 0}, 
+                                            {-1, 0, 2, 0, -1},
+                                            {0, 2, 0, 2, 0}, 
+                                            {-1, 0, 0, 0, -1}, 
+                                            {-2, -1, -1, -1, -2}
+                                          }
+                                          };
+
+static const int queen_weight[2][6][5] = {
+                                          {
+                                            {-3, -2, -1, -2, -3},
+                                            {-2, 0, 0, 0, -2}, 
+                                            {0, 1, 1, 1, 0}, 
+                                            {0, 1, 1, 1, 0}, 
+                                            {-2, 0, 1, 0, -2}, 
+                                            {-3, -2, -1, -2, -3}
+                                          },
+                                          {
+                                            {-3, -2, -1, -2, -3}, 
+                                            {-2, 0, 1, 0, -2},
+                                            {0, 1, 1, 1, 0}, 
+                                            {0, 1, 1, 1, 0}, 
+                                            {-2, 0, 0, 0, -2}, 
+                                            {-3, -2, -1, -2, -3}
+                                          }
+                                        };
+
+static const int king_weight[2][6][5] = {
+                                        {
+                                          {-3, -4, -5, -4, -3}, 
+                                          {-3, -4, -5, -4, -3}, 
+                                          {-2, -3, -4, -3, -2}, 
+                                          {-1, -2, -2, -2, -1}, 
+                                          {2, 2, 0, 2, 2}, 
+                                          {2, 3, 1, 3, 2}
+                                        }, 
+                                        {
+                                          {2, 3, 1, 3, 2}, 
+                                          {2, 2, 0, 2, 2}, 
+                                          {-1, -2, -2, -2, -1}, 
+                                          {-2, -3, -4, -3, -2}, 
+                                          {-3, -4, -5, -4, -3}, 
+                                          {-3, -4, -5, -4, -3}
+                                        }
+                                        };
+
 /**
  * @brief evaluate the state
  * 
@@ -26,6 +136,40 @@ int State::evaluate(){
     }
   }
 
+  return val;
+}
+
+int State::super_evaluate() {
+  int val = 0;
+  int8_t type;
+  for(int i=0;i<BOARD_H;i++) {
+    for(int j=0;j<BOARD_W;j++) {
+      type = this->board.board[0][i][j];
+      val += value[type];
+      if(type == 0)continue;
+      else if(type == 1) val += pawn_weight[0][i][j];
+      else if(type == 2) val += rook_weight[0][i][j];
+      else if(type == 3) val += knight_weight[0][i][j];
+      else if(type == 4) val += bishop_weight[0][i][j];
+      else if(type == 5) val += queen_weight[0][i][j];
+      else
+        val += king_weight[0][i][j];
+    }
+  }
+  for(int i=0;i<BOARD_H;i++) {
+    for(int j=0;j<BOARD_W;j++) {
+      type = this->board.board[1][i][j];
+      val -= value[type];
+      if(type == 0) continue;
+      else if(type == 1) val -= pawn_weight[1][i][j];
+      else if(type == 2) val -= rook_weight[1][i][j];
+      else if(type == 3) val -= knight_weight[1][i][j];
+      else if(type == 4) val -= bishop_weight[1][i][j];
+      else if(type == 5) val -= queen_weight[1][i][j];
+      else 
+        val -= knight_weight[1][i][j];
+    }
+  }
   return val;
 }
 
