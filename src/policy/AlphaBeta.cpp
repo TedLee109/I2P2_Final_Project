@@ -28,8 +28,12 @@ Move AlphaBeta::get_move(State *state, int depth){
         int max = min_score, score;
         for(auto m : actions) {
             if((score = alphabeta(state->next_state(m), depth - 1, false, min_score, max_score)) > max) {
-                next_move = m;
-                max = score;
+                //We could never let opponent win. The win codition is for opponent
+                if(state->next_state(m)->game_state != WIN) {
+                    next_move = m;
+                    max = score;
+                }
+                
             }
         }
         
@@ -37,8 +41,11 @@ Move AlphaBeta::get_move(State *state, int depth){
         int min = max_score, score;
         for(auto m : actions) {
             if((score = alphabeta(state->next_state(m), depth - 1, true, min_score, max_score)) < min) {
-                next_move = m;
-                min = score;
+                //We could never let opponent win. The win codition is for opponent
+                if(state->next_state(m)->game_state != WIN){
+                    next_move = m; 
+                    min = score;
+                } 
             }
         }
     }
