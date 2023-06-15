@@ -48,7 +48,7 @@ Move AlphaBeta::get_move(State *state, int depth){
 
 int AlphaBeta::alphabeta(State* root, int depth, bool maximizer, int alpha, int beta) {
     if(depth == 0) {
-        return root->super_evaluate();
+        return root->evaluate();
     } 
     if(maximizer) {
         if(!root->legal_actions.size())
