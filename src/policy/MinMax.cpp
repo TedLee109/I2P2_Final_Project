@@ -21,7 +21,6 @@ Move MinMax::get_move(State *state, int depth){
     state->get_legal_actions();
   
   auto actions = state->legal_actions;
-  int i = 0;
   Move next_move;
     if(state->player == 0) {
         int max = min_score, score;
