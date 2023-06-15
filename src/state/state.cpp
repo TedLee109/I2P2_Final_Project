@@ -135,7 +135,7 @@ int State::evaluate(){
       val -= value[(int8_t)this->board.board[1][i][j]];
     }
   }
-
+  
   return val;
 }
 
@@ -170,6 +170,8 @@ int State::super_evaluate() {
         val -= knight_weight[1][i][j];
     }
   }
+  if(this->player == 0 && this->game_state == WIN) val += 2000;
+  if(this->player == 1 && this->game_state == WIN) val -= 2000; 
   return val;
 }
 
