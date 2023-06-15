@@ -4,6 +4,8 @@
 #include "../state/state.hpp"
 #include "./AlphaBeta.hpp"
 
+//it's not a stable algorithm
+
 using namespace std;
 
 const int max_score = 10000;
@@ -21,7 +23,6 @@ Move AlphaBeta::get_move(State *state, int depth){
     state->get_legal_actions();
   
   auto actions = state->legal_actions;
-  int i = 0;
   Move next_move;
     if(state->player == 0) {
         int max = min_score, score;
@@ -47,7 +48,7 @@ Move AlphaBeta::get_move(State *state, int depth){
 
 int AlphaBeta::alphabeta(State* root, int depth, bool maximizer, int alpha, int beta) {
     if(depth == 0) {
-        return root->evaluate();
+        return root->super_evaluate();
     } 
     if(maximizer) {
         if(!root->legal_actions.size())
