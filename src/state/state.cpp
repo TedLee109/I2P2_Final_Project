@@ -1,10 +1,12 @@
 #include <iostream>
 #include <sstream>
 #include <cstdint>
+#include <algorithm>
 
 #include "./state.hpp"
 #include "../config.hpp"
 
+static const int value[7] = {0, 10, 50, 30, 30, 100, 900};
 
 /**
  * @brief evaluate the state
@@ -12,8 +14,19 @@
  * @return int 
  */
 int State::evaluate(){
-  // [TODO] design your own evaluation function
-  return 0;
+  int val = 0;
+  for(int i=0;i<BOARD_H;i++) {
+    for(int j=0;j<BOARD_W;j++) {
+      val += value[(int8_t)this->board.board[0][i][j]];
+    }
+  }
+  for(int i=0;i<BOARD_H;i++) {
+    for(int j=0;j<BOARD_W;j++) {
+      val -= value[(int8_t)this->board.board[1][i][j]];
+    }
+  }
+
+  return val;
 }
 
 
@@ -32,6 +45,7 @@ State* State::next_state(Move move){
   if(moved == 1 && (to.first==BOARD_H-1 || to.first==0)){
     moved = 5;
   }
+  //eat
   if(next.board[1-this->player][to.first][to.second]){
     next.board[1-this->player][to.first][to.second] = 0;
   }

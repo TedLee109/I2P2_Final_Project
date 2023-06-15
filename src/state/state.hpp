@@ -58,6 +58,9 @@ class State{
     void get_legal_actions();
     std::string encode_output();
     std::string encode_state();
+
+    //add children
+    std::vector<State*> children; 
 };
 
 #endif
