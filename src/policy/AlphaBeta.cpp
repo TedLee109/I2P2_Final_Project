@@ -23,7 +23,7 @@ Move AlphaBeta::get_move(State *state, int depth){
     state->get_legal_actions();
   
   auto actions = state->legal_actions;
-  Move next_move;
+  Move next_move = actions[0]; // default, in case of every actions will cause us to loose
     if(state->player == 0) {
         int max = min_score, score;
         for(auto m : actions) {
