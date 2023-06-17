@@ -55,6 +55,8 @@ int StrongAlphaBeta::alphabeta(State* root, int depth, bool maximizer, int alpha
         return root->super_evaluate();
     } 
     if(maximizer) {
+        if(root->game_state == WIN) 
+            return max_score;
         if(!root->legal_actions.size())
             root->get_legal_actions();
         auto actions = root->legal_actions;
@@ -66,6 +68,8 @@ int StrongAlphaBeta::alphabeta(State* root, int depth, bool maximizer, int alpha
         return alpha;
     }
     else {
+        if(root->game_state == WIN) 
+            return min_score;
         if(!root->legal_actions.size())
             root->get_legal_actions();
         for(auto m : root->legal_actions){
