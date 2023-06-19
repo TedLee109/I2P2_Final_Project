@@ -46,7 +46,6 @@ Move StrongAlphaBeta::get_move(State *state, int depth){
             }
         }
     }
-    delete state;
   return next_move;
 }
 

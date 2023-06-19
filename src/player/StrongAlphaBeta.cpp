@@ -40,15 +40,16 @@ void read_board(std::ifstream& fin) {
  */
 void write_valid_spot(std::ofstream& fout) {
   // Keep updating the output until getting killed.
+  int depth = 1;
   while(true) {
-    auto move = StrongAlphaBeta::get_move(root, 6);
+    auto move = StrongAlphaBeta::get_move(root, depth);
     fout << move.first.first << " " << move.first.second << " "\
          << move.second.first << " " << move.second.second << std::endl;
-    
+    depth++;
     // Remember to flush the output to ensure the last action is written to file.
     fout.flush();
-    break;
   }
+  delete root;
 }
 
 
