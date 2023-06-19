@@ -62,6 +62,10 @@ class State{
 
     //add children
     std::vector<State*> children; 
+    State* parent;
+    double w = 0;
+    int ni = 0;
+    Move m; //after the root state done the move, it will come to this state
 };
 
 #endif
