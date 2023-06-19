@@ -51,9 +51,10 @@ Move StrongAlphaBeta::get_move(State *state, int depth){
 }
 
 int StrongAlphaBeta::alphabeta(State* root, int depth, bool maximizer, int alpha, int beta) {
-    if(depth == 0) {
+    if(depth == 0 || root->game_state == DRAW) {
         return root->super_evaluate();
     } 
+    
     if(maximizer) {
         if(root->game_state == WIN) 
             return max_score;
