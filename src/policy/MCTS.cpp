@@ -10,7 +10,7 @@
 
 using namespace std;
 
-#define simulate_time 50000
+#define simulate_time 100000
 
 
 Move MCTS::get_move(State* state) {
